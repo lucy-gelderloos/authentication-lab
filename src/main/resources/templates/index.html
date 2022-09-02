@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+<head th:insert="general.html :: headerfiles">
     <title>App</title>
-    <link rel="stylesheet" href="../styles.css" />
 </head>
 <body>
-It works!
+<header th:insert="general.html :: header"> </header>
+<p>It works!</p>
 </body>
 </html>

@@ -1,9 +1,7 @@
 package com.gelderloos.authentication.models;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class AppUser {
@@ -13,6 +11,9 @@ public class AppUser {
 
     private String username;
     private String password;
+
+    @OneToMany(mappedBy = "appUser")
+    private List<AppPost> postsByUser;
 
     protected AppUser(){
         }

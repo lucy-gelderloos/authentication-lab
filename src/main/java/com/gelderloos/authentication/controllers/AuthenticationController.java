@@ -25,7 +25,7 @@ public class AuthenticationController {
 
     @GetMapping("/loginWithSecret")
         public String getLoginWithSecretPage() {
-        return("/login");
+        return("/loginWithSecret");
     }
 
     @GetMapping("/signup")
@@ -33,19 +33,10 @@ public class AuthenticationController {
         return("/signup");
     }
 
-    @PostMapping("/login")
-        public RedirectView logInUser(String username, String password) {
-            AppUser userFromDb = appUserRepository.findByUsername(username);
-
-            if(userFromDb.getPassword().equals(password)) {
-                // redirect to index
-            } else {
-                //redirect to login
-            }
-
-            return new RedirectView("/");
-        }
-
+    @GetMapping("/logout")
+        public String getIndexOnLogout() {
+        return("/index");
+    }
 
     //POST loginWithSecret THIS WAS AFTER OUR IN CLASS DEMO
     @PostMapping("/loginWithSecret")
@@ -54,15 +45,16 @@ public class AuthenticationController {
         if ((userFromDb == null)
                 || (!BCrypt.checkpw(password, userFromDb.getPassword())))
         {
-            return new RedirectView("/loginWithSecret");
+            return new RedirectView("/index");
         }
 
         HttpSession session = request.getSession();
         session.setAttribute("username", username);
 
-        return new RedirectView("/withSecret");
+        return new RedirectView("/indexWithSecret");
 
     }
+
     //POST logoutWithSecret THIS WAS AFTER OUR IN CLASS DEMO
     @PostMapping("/logoutWithSecret")
     public RedirectView logOutUserWithSecret(HttpServletRequest request)
@@ -70,7 +62,17 @@ public class AuthenticationController {
         HttpSession session = request.getSession();
         session.invalidate();
 
-        return new RedirectView("/loginWithSecret");
+        return new RedirectView("/logout");
+    }
+
+    //POST logoutWithSecret THIS WAS AFTER OUR IN CLASS DEMO
+    @PostMapping("/logout")
+    public RedirectView logOutUser(HttpServletRequest request)
+    {
+        HttpSession session = request.getSession();
+        session.invalidate();
+
+        return new RedirectView("/logout");
     }
 
     // POST signup
@@ -82,6 +84,6 @@ public class AuthenticationController {
         AppUser newUser = new AppUser(username, hashedPassword);
         // save the user to the DB --> UserRepo
         appUserRepository.save(newUser);
-        return new RedirectView("/login");
+        return new RedirectView("/loginWithSecret");
     }
 }
